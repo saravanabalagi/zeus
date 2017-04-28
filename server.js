@@ -3,15 +3,15 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
-import { get, post } from './api';
-import Config from './config';
+import { get, post } from './src/api';
+import Config from './src/config';
 
-const port = 3000;
+const port = 3001;
 const app = express();
-use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(favicon(path.join(__dirname, 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(compression());
 
 app.get('/ping', (req, res) => {

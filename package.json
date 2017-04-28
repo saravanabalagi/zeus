@@ -1,4 +1,13 @@
 {
+  "scripts": {
+    "start": "nodemon server.js --exec babel-node",
+    "lint": "rm eslint_output.txt && eslint src --fix > eslint_output.txt",
+    "build": "babel -d build",
+    "serve": "node server.js"
+  },
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.1",
@@ -7,5 +16,14 @@
     "path": "^0.12.7",
     "qs": "^6.4.0",
     "serve-favicon": "^2.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1",
+    "nodemon": "^1.11.0"
   }
 }
