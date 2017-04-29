@@ -1,0 +1,7 @@
+
+/Users/praveens/Desktop/learning/apps/zeus/src/config/index.js
+  2:1  warning  Line 2 exceeds the maximum line length of 80  max-len
+  3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
+
+✖ 2 problems (0 errors, 2 warnings)
+
