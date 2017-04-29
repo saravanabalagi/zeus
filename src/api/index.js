@@ -7,22 +7,19 @@ const appendQuery = (uri, param) => {
   return url;
 };
 
-const get = (url, data) => {
+const get = (url, data, options = {}) => {
   const param = data ? qs.stringify(data) : '';
   const fullUri = appendQuery(finalUrl, param);
   return new Promise((resolve) => {
-    axios.get(fullUri)
+    axios.get(fullUri, options)
       .then((response) => resolve(response))
       .catch((error) => resolve(error.response));
   });
 };
 
-const post = (url, headers, body) => {
+const post = (url, body, options = {}) => {
   return new Promise((resolve) => {
-    axios.post(url, {
-      headers,
-      data: body,
-    })
+    axios.post(url, body, options)
       .then((response) => resolve(response))
       .catch((error) => resolve(error.response));
   });
