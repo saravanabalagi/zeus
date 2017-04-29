@@ -1,4 +1,12 @@
 {
+  "name": "Zeus",
+  "version": "0.0.1",
+  "description": "VR News for the gods",
+  "main": "server.js",
+  "engines": {
+    "node": "7.8.0",
+    "npm": "4.2.0"
+  },
   "scripts": {
     "start": "nodemon server.js --exec babel-node",
     "lint": "rm eslint_output.txt && eslint src --fix > eslint_output.txt",
