@@ -17,15 +17,24 @@ const get = (url, data) => {
   });
 };
 
-const post = (url, body) => {
+const post = (url, headers, body) => {
   return new Promise((resolve) => {
-    axios.post(url, body)
+    axios.post(url, {
+      headers,
+      data: body,
+    })
       .then((response) => resolve(response))
       .catch((error) => resolve(error.response));
   });
 };
 
+const setAuthToken = (token) => {
+  if (token) axios.defaults.headers.Authorization = token;
+  else delete axios.defaults.headers.Authorization;
+};
+
 export default {
   get,
   post,
+  setAuthToken,
 };
