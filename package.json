@@ -8,6 +8,7 @@
     "npm": "4.2.0"
   },
   "scripts": {
+    "clean": "rm -rf build",
     "start": "nodemon server.js --exec babel-node",
     "lint": "rm eslint_output.txt && eslint src --fix > eslint_output.txt",
     "build": "babel -d build",
@@ -16,6 +17,12 @@
   "pre-commit": [
     "lint"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pravbeatle/zeus.git"
+  },
+  "author": "praveen selvaraj",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "^1.17.1",
