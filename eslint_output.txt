@@ -1,7 +1,10 @@
 
-/Users/praveens/Desktop/learning/apps/zeus/src/config/index.js
-  2:1  warning  Line 2 exceeds the maximum line length of 80  max-len
-  3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
+/Users/praveens/Desktop/learning/apps/zeus/src/api/index.js
+  13:3  warning  Unexpected console statement  no-console
 
-✖ 2 problems (0 errors, 2 warnings)
+/Users/praveens/Desktop/learning/apps/zeus/src/config/index.js
+  3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
+  4:1  warning  Line 4 exceeds the maximum line length of 80  max-len
+
+✖ 3 problems (0 errors, 3 warnings)
 

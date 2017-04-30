@@ -9,7 +9,8 @@ const appendQuery = (uri, param) => {
 
 const get = (url, data, options = {}) => {
   const param = data ? qs.stringify(data) : '';
-  const fullUri = appendQuery(finalUrl, param);
+  const fullUri = appendQuery(url, param);
+  console.log('AUTH HEADER :::::::', axios.defaults.headers.Authorization);
   return new Promise((resolve) => {
     axios.get(fullUri, options)
       .then((response) => resolve(response))

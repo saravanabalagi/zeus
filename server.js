@@ -4,7 +4,8 @@ import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
 import { get, post, setAuthToken } from './src/api';
-import { twitterConsumerKey, twitterConsumerSecret } from './src/config';
+import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './src/config';
+import { Urls } from './src/helpers';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -14,12 +15,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(compression());
 
+//initial setup and gateway into the app
 app.get('/ping', (req, res) => {
   //setup for twitter rest api
   const base64BearerRequestToken = new Buffer(`${twitterConsumerKey}:${twitterConsumerSecret}`).toString('base64');
   //make post request to twitter
   post(
-    'https://api.twitter.com/oauth2/token',
+    `${twitterBaseUri}${Urls.twitterOauth2Url()}`,
     "grant_type=client_credentials",
     {
       headers: {
@@ -37,6 +39,16 @@ app.get('/ping', (req, res) => {
       res.status(404)
       .send('Failed to get bearer token!');
     }
+  }).catch(err => console.log(err));
+});
+
+//get locations for which twitter can provide trends for
+app.get('/locations', (req, res) => {
+  get(
+    `${twitterBaseUri}${Urls.twitterLocationsUrl()}`,
+    {}
+  ).then((response) => {
+    res.send(response.data);
   }).catch(err => console.log(err));
 });
 
