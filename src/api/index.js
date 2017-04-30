@@ -31,8 +31,13 @@ const setAuthToken = (token) => {
   else delete axios.defaults.headers.Authorization;
 };
 
+const getAuthToken = () => {
+  return axios.defaults.headers.Authorization;
+};
+
 export default {
   get,
   post,
   setAuthToken,
+  getAuthToken,
 };

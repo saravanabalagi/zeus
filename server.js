@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
-import { get, post, setAuthToken } from './src/api';
+import { get, post, setAuthToken, getAuthToken } from './src/api';
 import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './src/config';
 import { Urls } from './src/helpers';
 
@@ -21,7 +21,7 @@ app.get('/ping', (req, res) => {
   const base64BearerRequestToken = new Buffer(`${twitterConsumerKey}:${twitterConsumerSecret}`).toString('base64');
   //make post request to twitter
   post(
-    `${twitterBaseUri}${Urls.twitterOauth2Url()}`,
+    `${twitterBaseUri}${Urls.twitterOauth2BearerTokenUrl()}`,
     "grant_type=client_credentials",
     {
       headers: {
@@ -31,13 +31,13 @@ app.get('/ping', (req, res) => {
     }
   )
   .then((response) => {
-    if (response.data.token_type === 'bearer') {
-      setAuthToken(response.data.access_token);
-      res.status(200)
+    if (response.status < 400 && response.data.token_type === 'bearer') {
+      setAuthToken(`Bearer ${response.data.access_token}`);
+      res.status(response.status)
       .send('Successfully fetched bearer token!');
     } else {
-      res.status(404)
-      .send('Failed to get bearer token!');
+      res.status(response.status)
+      .send(response.data.errors);
     }
   }).catch(err => console.log(err));
 });
@@ -52,9 +52,31 @@ app.get('/locations', (req, res) => {
   }).catch(err => console.log(err));
 });
 
+//invalidate bearer access token
 app.get('/unping', (req, res) => {
-  //delete the twitter auth token
-  setAuthToken(null);
+  //setup for unsetup
+  const base64BearerRequestToken = new Buffer(`${twitterConsumerKey}:${twitterConsumerSecret}`).toString('base64');
+  //make a call to invalidate the token
+  post(
+    `${twitterBaseUri}${Urls.twitterOauth2InvalidateBearerTokenUrl()}`,
+    `access_token=${getAuthToken().split('Bearer ')[1]}`,
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${base64BearerRequestToken}`
+      }
+    }
+  ).then((response) => {
+    if (response.status < 400) {
+      //delete the twitter auth token from axios default headers
+      setAuthToken(null);
+      res.status(response.status)
+      .send('Successfully invalidated bearer token!');
+    } else {
+      res.status(response.status)
+      .send(response.data.errors);
+    }
+  }).catch(err => console.log(err));
 });
 
 app.listen(process.env.PORT || port, () => {
