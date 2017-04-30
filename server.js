@@ -5,7 +5,7 @@ import compression from 'compression';
 import favicon from 'serve-favicon';
 import { get, post, setAuthToken, getAuthToken } from './src/api';
 import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './src/config';
-import { Urls } from './src/helpers';
+import { Urls, Locations } from './src/helpers';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -77,6 +77,11 @@ app.get('/unping', (req, res) => {
       .send(response.data.errors);
     }
   }).catch(err => console.log(err));
+});
+
+//get trends for a particular location
+app.get('/trends/:locationName', (req, res) => {
+  
 });
 
 app.listen(process.env.PORT || port, () => {
