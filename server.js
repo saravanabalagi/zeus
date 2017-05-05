@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
+import _ from 'lodash';
 import { get, post, setAuthToken, getAuthToken } from './src/api';
 import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './src/config';
 import { Urls, Locations } from './src/helpers';
@@ -42,16 +43,6 @@ app.get('/ping', (req, res) => {
   }).catch(err => console.log(err));
 });
 
-//get locations for which twitter can provide trends for
-app.get('/locations', (req, res) => {
-  get(
-    `${twitterBaseUri}${Urls.twitterLocationsUrl()}`,
-    {}
-  ).then((response) => {
-    res.send(response.data);
-  }).catch(err => console.log(err));
-});
-
 //invalidate bearer access token
 app.get('/unping', (req, res) => {
   //setup for unsetup
@@ -79,11 +70,35 @@ app.get('/unping', (req, res) => {
   }).catch(err => console.log(err));
 });
 
+//get locations for which twitter can provide trends for
+app.get('/locations', (req, res) => {
+  get(
+    `${twitterBaseUri}${Urls.twitterLocationsUrl()}`,
+    {}
+  ).then((response) => {
+    res.send(response.data);
+  }).catch(err => console.log(err));
+});
+
+
 //get trends for a particular location
 app.get('/trends/:locationName', (req, res) => {
-  
+  const locationObject = _.find(Locations, (location) => {
+    return location.name.toLowerCase() === req.params.locationName.toLowerCase();
+  });
+  if(locationObject) {
+    get(
+      `${twitterBaseUri}${Urls.twitterPlaceTrendsUrl()}`,
+      {id: locationObject.woeid}
+    ).then((response) => {
+      res.send(response.data);
+    }).catch(err => console.log(err));
+  } else {
+    res.status(400)
+    .send('Incorrect location name!');
+  }
 });
 
 app.listen(process.env.PORT || port, () => {
-  console.log('Serving now...');
+  console.log(`Serving now on port ${port} ...`);
 });
