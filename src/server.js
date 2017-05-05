@@ -4,9 +4,9 @@ import path from 'path';
 import compression from 'compression';
 import favicon from 'serve-favicon';
 import _ from 'lodash';
-import { get, post, setAuthToken, getAuthToken } from './src/api';
-import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './src/config';
-import { Urls, Locations } from './src/helpers';
+import { get, post, setAuthToken, getAuthToken } from './api';
+import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './config';
+import { Urls, Locations } from './helpers';
 
 const port = process.env.PORT || 3000;
 const app = express();

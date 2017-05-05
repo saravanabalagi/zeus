@@ -12,7 +12,7 @@
     "start-dev": "nodemon src/server.js --exec babel-node",
     "start": "npm run build && npm run serve",
     "lint": "rm eslint_output.txt && eslint src --fix > eslint_output.txt",
-    "build": "npm run clean && babel src/ -d build",
+    "build": "npm run clean && babel src -d build",
     "serve": "node build/server.js"
   },
   "pre-commit": [
