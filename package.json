@@ -10,9 +10,9 @@
   "scripts": {
     "clean": "rm -rf build",
     "start-dev": "nodemon server.js --exec babel-node",
-    "start": "npm run build && node server.js",
+    "start": "npm run build && babel-node server.js",
     "lint": "rm eslint_output.txt && eslint src --fix > eslint_output.txt",
-    "build": "npm run clean && babel src -d build",
+    "build": "npm run clean && babel src/ -d build",
     "serve": "node server.js"
   },
   "pre-commit": [
