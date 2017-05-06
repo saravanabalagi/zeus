@@ -1,7 +1,4 @@
 
-/Users/praveens/Desktop/learning/apps/zeus/src/api/index.js
-  29:3  warning  Unexpected console statement  no-console
-
 /Users/praveens/Desktop/learning/apps/zeus/src/config/index.js
   3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
   4:1  warning  Line 4 exceeds the maximum line length of 80  max-len
@@ -17,8 +14,8 @@
    80:21  warning  Unexpected console statement                   no-console
    87:1   warning  Line 87 exceeds the maximum line length of 80  max-len
    99:1   warning  Line 99 exceeds the maximum line length of 80  max-len
-  101:23  warning  Unexpected console statement                   no-console
-  134:3   warning  Unexpected console statement                   no-console
+  102:23  warning  Unexpected console statement                   no-console
+  137:3   warning  Unexpected console statement                   no-console
 
-✖ 15 problems (0 errors, 15 warnings)
+✖ 14 problems (0 errors, 14 warnings)
 

@@ -26,7 +26,6 @@ const post = (url, body, options = {}) => {
 };
 
 const setAuthToken = (token) => {
-  console.log('SET AUTH TOKEN', token);
   if (token) axios.defaults.headers.Authorization = token;
   else delete axios.defaults.headers.Authorization;
 };
