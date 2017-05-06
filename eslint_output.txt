@@ -6,18 +6,19 @@
   3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
   4:1  warning  Line 4 exceeds the maximum line length of 80  max-len
   5:1  warning  Line 5 exceeds the maximum line length of 80  max-len
+  6:1  warning  Line 6 exceeds the maximum line length of 80  max-len
+  7:1  warning  Line 7 exceeds the maximum line length of 80  max-len
 
 /Users/praveens/Desktop/learning/apps/zeus/src/server.js
-    6:1   warning  Line 6 exceeds the maximum line length of 80   max-len
-   20:1   warning  Line 20 exceeds the maximum line length of 80  max-len
-   41:21  warning  Unexpected console statement                   no-console
-   47:1   warning  Line 47 exceeds the maximum line length of 80  max-len
-   68:21  warning  Unexpected console statement                   no-console
-   78:21  warning  Unexpected console statement                   no-console
-   85:1   warning  Line 85 exceeds the maximum line length of 80  max-len
-   97:1   warning  Line 97 exceeds the maximum line length of 80  max-len
-   99:23  warning  Unexpected console statement                   no-console
-  118:3   warning  Unexpected console statement                   no-console
+   22:1   warning  Line 22 exceeds the maximum line length of 80  max-len
+   43:21  warning  Unexpected console statement                   no-console
+   49:1   warning  Line 49 exceeds the maximum line length of 80  max-len
+   70:21  warning  Unexpected console statement                   no-console
+   80:21  warning  Unexpected console statement                   no-console
+   87:1   warning  Line 87 exceeds the maximum line length of 80  max-len
+   99:1   warning  Line 99 exceeds the maximum line length of 80  max-len
+  101:23  warning  Unexpected console statement                   no-console
+  134:3   warning  Unexpected console statement                   no-console
 
-✖ 14 problems (0 errors, 14 warnings)
+✖ 15 problems (0 errors, 15 warnings)
 

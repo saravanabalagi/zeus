@@ -3,9 +3,11 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import _ from 'lodash';
 import {get, post, setAuthToken, getAuthToken} from './api';
-import {twitterConsumerKey, twitterConsumerSecret, twitterBaseUri, bingSearchApiKey} from './config';
+import {twitterConsumerKey, twitterConsumerSecret,
+  twitterBaseUri, bingSearchApiKey, apiAiClientAccessToken} from './config';
 import {Urls, Locations} from './helpers';
 const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
+const ApiAi = require('apiai')(apiAiClientAccessToken);
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -112,6 +114,20 @@ app.get('/news/:query', (req, res) => {
       res.send(err);
     }
   });
+});
+
+// get entities and intents from sentence
+app.get('/ai/:text', (req, res) => {
+  const apiAiRequest = ApiAi.textRequest(req.params.text, {
+    sessionId: (Math.random() + 1).toString(36).substring(2),
+  });
+  apiAiRequest.on('response', (response) => {
+    res.send(response.result);
+  });
+  apiAiRequest.on('error', (error) => {
+    res.send(error);
+  });
+  apiAiRequest.end();
 });
 
 app.listen(process.env.PORT || port, () => {

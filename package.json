@@ -25,6 +25,7 @@
   "author": "praveen selvaraj",
   "license": "MIT",
   "dependencies": {
+    "apiai": "^4.0.2",
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",
     "babel-plugin-add-module-exports": "^0.2.1",
