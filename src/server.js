@@ -125,7 +125,11 @@ app.get('/ai/:text', (req, res) => {
     sessionId: (Math.random() + 1).toString(36).substring(2),
   });
   apiAiRequest.on('response', (response) => {
-    res.send(response.result);
+    const result = {
+      'intent': response.result.metadata.intentName,
+      'entities': response.result.parameters,
+    };
+    res.send(result);
   });
   apiAiRequest.on('error', (error) => {
     res.send(error);
