@@ -8,6 +8,7 @@ import {twitterConsumerKey, twitterConsumerSecret,
 import {Urls, Locations} from './helpers';
 const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
 const ApiAi = require('apiai')(apiAiClientAccessToken);
+const defaultNewsImage = 'https://s3-ap-southeast-1.amazonaws.com/cshare1/news-default.png';
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -113,12 +114,12 @@ app.get('/news/:query', (req, res) => {
       let newsArticles = [];
        _.forEach(body.value, (article) => {
         const newsArticleObject = {
-          'provider': article.provider.name,
+          'provider': article.provider[0].name,
           'title': article.name,
           'description': article.description,
           'url': article.url,
           'urlToImage': article.image
-              && article.image.thumbnail.contentUrl || '',
+              && article.image.thumbnail.contentUrl || defaultNewsImage,
           'publishedAt': article.datePublished,
         };
         newsArticles.push(newsArticleObject);
