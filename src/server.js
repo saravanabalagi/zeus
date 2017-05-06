@@ -97,7 +97,8 @@ app.get('/trends/:locationName', (req, res) => {
         }
       });
       const sortedTrends = _.sortBy(nullRemovedTrends, 'tweet_volume').reverse();
-      res.send(sortedTrends);
+      const countTill = req.query.count || sortedTrends.length;
+      res.send(sortedTrends.slice(0, countTill));
     }).catch((err) => console.log(err));
   } else {
     res.status(400)
