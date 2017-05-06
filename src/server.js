@@ -4,7 +4,8 @@ import compression from 'compression';
 import _ from 'lodash';
 import {get, post, setAuthToken, getAuthToken} from './api';
 import {twitterConsumerKey, twitterConsumerSecret,
-  twitterBaseUri, bingSearchApiKey, apiAiClientAccessToken, newsApiKey} from './config';
+  twitterBaseUri, bingSearchApiKey,
+  apiAiClientAccessToken, newsApiKey, baseApiUrl} from './config';
 import {Urls, Locations} from './helpers';
 const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
 const Newsapi = require('newsapi');
@@ -38,7 +39,7 @@ app.get('/ping', (req, res) => {
     if (response.status < 400 && response.data.token_type === 'bearer') {
       setAuthToken(`Bearer ${response.data.access_token}`);
       res.status(response.status)
-      .send('Successfully fetched bearer token!');
+      .send({error: 'Successfully fetched bearer token!'});
     } else {
       res.status(response.status)
       .send(response.data.errors);
@@ -65,7 +66,7 @@ app.get('/unping', (req, res) => {
       // delete the twitter auth token from axios default headers
       setAuthToken(null);
       res.status(response.status)
-      .send(['Successfully invalidated bearer token!']);
+      .send({error: 'Successfully invalidated bearer token!'});
     } else {
       res.status(response.status)
       .send(response.data.errors);
@@ -105,7 +106,7 @@ app.get('/trends/:locationName', (req, res) => {
     }).catch((err) => console.log(err));
   } else {
     res.status(400)
-    .send(['Incorrect location name!']);
+    .send({error: 'Incorrect location name!'});
   }
 });
 
@@ -134,25 +135,6 @@ app.get('/news/:query', (req, res) => {
   });
 });
 
-// get latest news from a particular source from newsapi org
-app.get('/newsapi', (req, res) => {
-  NewsApi.articles({
-    source: req.query.source,
-    sortBy: 'top',
-  }).then((response) => {
-    if(response.articles) {
-      let newsArticles = _.forEach(response.articles, (article) => {
-         article.provider = req.query.source;
-         article.urlToImage = article.urlToImage || defaultNewsImage;
-      });
-      const countTill = req.query.count || newsArticles.length;
-      res.send(newsArticles.slice(0, countTill));
-    } else {
-      res.send(['Cannot retreive articles!']);
-    }
-  }).catch((err) => console.log(err));
-});
-
 // get entities and intents from sentence
 app.get('/ai/:text', (req, res) => {
   const apiAiRequest = ApiAi.textRequest(req.params.text, {
@@ -169,6 +151,27 @@ app.get('/ai/:text', (req, res) => {
     res.send(error);
   });
   apiAiRequest.end();
+});
+
+// get latest news from a particular source from newsapi org
+app.get('/newsapi/:text', (req, res) => {
+  get(`${baseApiUrl}/ai/${req.params.text}`, {}).then((aiResponse) => {
+    NewsApi.articles({
+      source: aiResponse.data.entities['news-source'],
+      sortBy: 'top',
+    }).then((response) => {
+      if(response.articles) {
+        let newsArticles = _.forEach(response.articles, (article) => {
+           article.provider = req.query.source;
+           article.urlToImage = article.urlToImage || defaultNewsImage;
+        });
+        const countTill = req.query.count || newsArticles.length;
+        res.send(newsArticles.slice(0, countTill));
+      } else {
+        res.send({error: 'Cannot retreive articles!'});
+      }
+    }).catch((err) => console.log(err));
+  }).catch(err => console.log(err));
 });
 
 app.listen(process.env.PORT || port, () => {
