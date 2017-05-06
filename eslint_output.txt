@@ -15,7 +15,7 @@
    87:1   warning  Line 87 exceeds the maximum line length of 80  max-len
    99:1   warning  Line 99 exceeds the maximum line length of 80  max-len
   102:23  warning  Unexpected console statement                   no-console
-  141:3   warning  Unexpected console statement                   no-console
+  153:3   warning  Unexpected console statement                   no-console
 
 ✖ 14 problems (0 errors, 14 warnings)
 

@@ -110,7 +110,19 @@ app.get('/trends/:locationName', (req, res) => {
 app.get('/news/:query', (req, res) => {
   Bing.news(`${req.params.query}`, {}, (err, response, body) => {
     if (body) {
-      const newsArticles = body.value;
+      let newsArticles = [];
+       _.forEach(body.value, (article) => {
+        const newsArticleObject = {
+          'provider': article.provider.name,
+          'title': article.name,
+          'description': article.description,
+          'url': article.url,
+          'urlToImage': article.image
+              && article.image.thumbnail.contentUrl || '',
+          'publishedAt': article.datePublished,
+        };
+        newsArticles.push(newsArticleObject);
+      });
       const countTill = req.query.count || body.value.length;
       res.send(newsArticles.slice(0, countTill));
     } else {
