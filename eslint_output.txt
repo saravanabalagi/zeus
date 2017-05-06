@@ -1,23 +1,23 @@
 
 /Users/praveens/Desktop/learning/apps/zeus/src/config/index.js
-  3:1  warning  Line 3 exceeds the maximum line length of 80  max-len
   4:1  warning  Line 4 exceeds the maximum line length of 80  max-len
   5:1  warning  Line 5 exceeds the maximum line length of 80  max-len
-  7:1  warning  Line 7 exceeds the maximum line length of 80  max-len
+  6:1  warning  Line 6 exceeds the maximum line length of 80  max-len
   8:1  warning  Line 8 exceeds the maximum line length of 80  max-len
+  9:1  warning  Line 9 exceeds the maximum line length of 80  max-len
 
 /Users/praveens/Desktop/learning/apps/zeus/src/server.js
-    7:1   warning  Line 7 exceeds the maximum line length of 80    max-len
-   25:1   warning  Line 25 exceeds the maximum line length of 80   max-len
-   46:21  warning  Unexpected console statement                    no-console
-   52:1   warning  Line 52 exceeds the maximum line length of 80   max-len
-   73:21  warning  Unexpected console statement                    no-console
-   83:21  warning  Unexpected console statement                    no-console
-   90:1   warning  Line 90 exceeds the maximum line length of 80   max-len
-  102:1   warning  Line 102 exceeds the maximum line length of 80  max-len
-  105:23  warning  Unexpected console statement                    no-console
-  153:21  warning  Unexpected console statement                    no-console
-  175:3   warning  Unexpected console statement                    no-console
+   26:1   warning  Line 26 exceeds the maximum line length of 80   max-len
+   47:21  warning  Unexpected console statement                    no-console
+   53:1   warning  Line 53 exceeds the maximum line length of 80   max-len
+   74:21  warning  Unexpected console statement                    no-console
+   84:21  warning  Unexpected console statement                    no-console
+   91:1   warning  Line 91 exceeds the maximum line length of 80   max-len
+  103:1   warning  Line 103 exceeds the maximum line length of 80  max-len
+  106:23  warning  Unexpected console statement                    no-console
+  173:23  warning  Unexpected console statement                    no-console
+  174:21  warning  Unexpected console statement                    no-console
+  178:3   warning  Unexpected console statement                    no-console
 
 ✖ 16 problems (0 errors, 16 warnings)
 

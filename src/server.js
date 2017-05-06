@@ -171,7 +171,7 @@ app.get('/newsapi/:text', (req, res) => {
         res.send({error: 'Cannot retreive articles!'});
       }
     }).catch((err) => console.log(err));
-  }).catch(err => console.log(err));
+  }).catch((err) => console.log(err));
 });
 
 app.listen(process.env.PORT || port, () => {

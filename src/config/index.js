@@ -1,5 +1,5 @@
 export default {
-  baseApiUrl: process.env.BASE_API_URL || 'https://zeus-news.herokuapp.com',
+  baseApiUrl: process.env.BASE_API_URL || 'http://zeus-news.herokuapp.com',
   twitterBaseUri: 'https://api.twitter.com',
   twitterConsumerKey: process.env.TWITTER_CONSUMER_KEY || 'KrRqpgZihVHX7u4nFyKpeUbk6',
   twitterConsumerSecret: process.env.TWITTER_CONSUMER_SECRET || 'S7rgk9wLYpgbC9FMdEednrvA4igFGgftx9o0Z6tq1kqJTxaX5d',
