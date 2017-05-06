@@ -1,34 +1,32 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import path from 'path';
 import compression from 'compression';
-import favicon from 'serve-favicon';
 import _ from 'lodash';
-import { get, post, setAuthToken, getAuthToken } from './api';
-import { twitterConsumerKey, twitterConsumerSecret, twitterBaseUri } from './config';
-import { Urls, Locations } from './helpers';
+import {get, post, setAuthToken, getAuthToken} from './api';
+import {twitterConsumerKey, twitterConsumerSecret, twitterBaseUri, bingSearchApiKey} from './config';
+import {Urls, Locations} from './helpers';
+const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
 
 const port = process.env.PORT || 3000;
 const app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
-// app.use(favicon(path.join(__dirname, 'favicon.ico')));
 app.use(compression());
 
-//initial setup and gateway into the app
+// initial setup and gateway into the app
 app.get('/ping', (req, res) => {
-  //setup for twitter rest api
+  // setup for twitter rest api
   const base64BearerRequestToken = new Buffer(`${twitterConsumerKey}:${twitterConsumerSecret}`).toString('base64');
-  //make post request to twitter
+  // make post request to twitter
   post(
     `${twitterBaseUri}${Urls.twitterOauth2BearerTokenUrl()}`,
-    "grant_type=client_credentials",
+    'grant_type=client_credentials',
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Basic ${base64BearerRequestToken}`,
-      }
+      },
     }
   )
   .then((response) => {
@@ -40,26 +38,26 @@ app.get('/ping', (req, res) => {
       res.status(response.status)
       .send(response.data.errors);
     }
-  }).catch(err => console.log(err));
+  }).catch((err) => console.log(err));
 });
 
-//invalidate bearer access token
+// invalidate bearer access token
 app.get('/unping', (req, res) => {
-  //setup for unsetup
+  // setup for unsetup
   const base64BearerRequestToken = new Buffer(`${twitterConsumerKey}:${twitterConsumerSecret}`).toString('base64');
-  //make a call to invalidate the token
+  // make a call to invalidate the token
   post(
     `${twitterBaseUri}${Urls.twitterOauth2InvalidateBearerTokenUrl()}`,
     `access_token=${getAuthToken().split('Bearer ')[1]}`,
     {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Basic ${base64BearerRequestToken}`
-      }
+        'Authorization': `Basic ${base64BearerRequestToken}`,
+      },
     }
   ).then((response) => {
     if (response.status < 400) {
-      //delete the twitter auth token from axios default headers
+      // delete the twitter auth token from axios default headers
       setAuthToken(null);
       res.status(response.status)
       .send('Successfully invalidated bearer token!');
@@ -67,21 +65,21 @@ app.get('/unping', (req, res) => {
       res.status(response.status)
       .send(response.data.errors);
     }
-  }).catch(err => console.log(err));
+  }).catch((err) => console.log(err));
 });
 
-//get locations for which twitter can provide trends for
+// get locations for which twitter can provide trends for
 app.get('/locations', (req, res) => {
   get(
     `${twitterBaseUri}${Urls.twitterLocationsUrl()}`,
     {}
   ).then((response) => {
     res.send(response.data);
-  }).catch(err => console.log(err));
+  }).catch((err) => console.log(err));
 });
 
 
-//get trends for a particular location
+// get trends for a particular location
 app.get('/trends/:locationName', (req, res) => {
   const locationObject = _.find(Locations, (location) => {
     return location.name.toLowerCase() === req.params.locationName.toLowerCase();
@@ -92,11 +90,22 @@ app.get('/trends/:locationName', (req, res) => {
       {id: locationObject.woeid}
     ).then((response) => {
       res.send(response.data);
-    }).catch(err => console.log(err));
+    }).catch((err) => console.log(err));
   } else {
     res.status(400)
     .send('Incorrect location name!');
   }
+});
+
+// get news for a particular query
+app.get('/news/:query', (req, res) => {
+  Bing.news(`${req.params.query}`, {}, (err, response, body) => {
+    if (body) {
+      res.send(body.value);
+    } else {
+      res.send(err);
+    }
+  });
 });
 
 app.listen(process.env.PORT || port, () => {
