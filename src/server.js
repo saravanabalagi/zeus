@@ -89,7 +89,13 @@ app.get('/trends/:locationName', (req, res) => {
       `${twitterBaseUri}${Urls.twitterPlaceTrendsUrl()}`,
       {id: locationObject.woeid}
     ).then((response) => {
-      res.send(response.data);
+      const nullRemovedTrends = _.forEach(response.data[0].trends, (trend) => {
+        if(!trend.tweet_volume) {
+          trend.tweet_volume = 0;
+        }
+      });
+      const sortedTrends = _.sortBy(nullRemovedTrends, 'tweet_volume').reverse();
+      res.send(sortedTrends);
     }).catch((err) => console.log(err));
   } else {
     res.status(400)
