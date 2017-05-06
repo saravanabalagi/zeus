@@ -4,9 +4,11 @@ import compression from 'compression';
 import _ from 'lodash';
 import {get, post, setAuthToken, getAuthToken} from './api';
 import {twitterConsumerKey, twitterConsumerSecret,
-  twitterBaseUri, bingSearchApiKey, apiAiClientAccessToken} from './config';
+  twitterBaseUri, bingSearchApiKey, apiAiClientAccessToken, newsApiKey} from './config';
 import {Urls, Locations} from './helpers';
 const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
+const Newsapi = require('newsapi');
+const NewsApi = new Newsapi(newsApiKey);
 const ApiAi = require('apiai')(apiAiClientAccessToken);
 const defaultNewsImage = 'https://s3-ap-southeast-1.amazonaws.com/cshare1/news-default.png';
 
@@ -63,7 +65,7 @@ app.get('/unping', (req, res) => {
       // delete the twitter auth token from axios default headers
       setAuthToken(null);
       res.status(response.status)
-      .send('Successfully invalidated bearer token!');
+      .send(['Successfully invalidated bearer token!']);
     } else {
       res.status(response.status)
       .send(response.data.errors);
@@ -103,11 +105,11 @@ app.get('/trends/:locationName', (req, res) => {
     }).catch((err) => console.log(err));
   } else {
     res.status(400)
-    .send('Incorrect location name!');
+    .send(['Incorrect location name!']);
   }
 });
 
-// get news for a particular query
+// get news for a particular query from bing news api
 app.get('/news/:query', (req, res) => {
   Bing.news(`${req.params.query}`, {}, (err, response, body) => {
     if (body) {
@@ -130,6 +132,25 @@ app.get('/news/:query', (req, res) => {
       res.send(err);
     }
   });
+});
+
+// get latest news from a particular source from newsapi org
+app.get('/newsapi', (req, res) => {
+  NewsApi.articles({
+    source: req.query.source,
+    sortBy: 'top',
+  }).then((response) => {
+    if(response.articles) {
+      let newsArticles = _.forEach(response.articles, (article) => {
+         article.provider = req.query.source;
+         article.urlToImage = article.urlToImage || defaultNewsImage;
+      });
+      const countTill = req.query.count || newsArticles.length;
+      res.send(newsArticles.slice(0, countTill));
+    } else {
+      res.send(['Cannot retreive articles!']);
+    }
+  }).catch((err) => console.log(err));
 });
 
 // get entities and intents from sentence
