@@ -110,7 +110,9 @@ app.get('/trends/:locationName', (req, res) => {
 app.get('/news/:query', (req, res) => {
   Bing.news(`${req.params.query}`, {}, (err, response, body) => {
     if (body) {
-      res.send(body.value);
+      const newsArticles = body.value;
+      const countTill = req.query.count || body.value.length;
+      res.send(newsArticles.slice(0, countTill));
     } else {
       res.send(err);
     }
