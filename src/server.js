@@ -39,7 +39,7 @@ app.get('/ping', (req, res) => {
     if (response.status < 400 && response.data.token_type === 'bearer') {
       setAuthToken(`Bearer ${response.data.access_token}`);
       res.status(response.status)
-      .send({error: 'Successfully fetched bearer token!'});
+      .send({message: 'Successfully fetched bearer token!'});
     } else {
       res.status(response.status)
       .send(response.data.errors);
@@ -66,7 +66,7 @@ app.get('/unping', (req, res) => {
       // delete the twitter auth token from axios default headers
       setAuthToken(null);
       res.status(response.status)
-      .send({error: 'Successfully invalidated bearer token!'});
+      .send({message: 'Successfully invalidated bearer token!'});
     } else {
       res.status(response.status)
       .send(response.data.errors);
