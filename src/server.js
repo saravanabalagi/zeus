@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {get, post, setAuthToken, getAuthToken} from './api';
 import {twitterConsumerKey, twitterConsumerSecret,
   twitterBaseUri, bingSearchApiKey,
-  apiAiClientAccessToken, newsApiKey, baseApiUrl} from './config';
+  apiAiClientAccessToken, newsApiKey, baseApiUrl, defaultNewsSource} from './config';
 import {Urls, Locations} from './helpers';
 const Bing = require('node-bing-api')({accKey: bingSearchApiKey});
 const Newsapi = require('newsapi');
@@ -157,12 +157,12 @@ app.get('/ai/:text', (req, res) => {
 app.get('/newsapi/:text', (req, res) => {
   get(`${baseApiUrl}/ai/${req.params.text}`, {}).then((aiResponse) => {
     NewsApi.articles({
-      source: aiResponse.data.entities['news-source'],
+      source: aiResponse.data.entities['news-source'] || defaultNewsSource,
       sortBy: 'top',
     }).then((response) => {
       if(response.articles) {
         let newsArticles = _.forEach(response.articles, (article) => {
-           article.provider = req.query.source;
+           article.provider = req.query.source || defaultNewsSource;
            article.urlToImage = article.urlToImage || defaultNewsImage;
         });
         const countTill = req.query.count || newsArticles.length;

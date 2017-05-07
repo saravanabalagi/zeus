@@ -7,4 +7,5 @@ export default {
   newsApiKey: process.env.NEWS_API_KEY || '758b6587060b470bb10d77918b96b8fc',
   apiAiClientAccessToken: process.env.API_AI_CLIENT_ACCESS_TOKEN || '0ac255d56407456ba4f45e5f3680bcf4',
   apiAiDeveloperAccessToken: process.env.API_AI_DEVELOPER_ACCESS_TOKEN || '5f1792a9135545eca3a6f09d36454df8',
+  defaultNewsSource: process.env.DEFAULT_NEWS_SOURCE || 'google-news',
 };
