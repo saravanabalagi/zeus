@@ -162,7 +162,7 @@ app.get('/newsapi/:text', (req, res) => {
     }).then((response) => {
       if(response.articles) {
         let newsArticles = _.forEach(response.articles, (article) => {
-           article.provider = req.query.source || defaultNewsSource;
+           article.provider = aiResponse.data.entities['news-source'] || defaultNewsSource;
            article.urlToImage = article.urlToImage || defaultNewsImage;
         });
         const countTill = req.query.count || newsArticles.length;
